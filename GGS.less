@@ -6,6 +6,22 @@
 *	
 */
 
+@import 'mixins.less';
+
+/*
+*
+*	Colours
+*
+*/
+
+@background: 	rgb(255,254,250);
+
+@body: 			rgb(61,60,56);
+@emphasis:		rgb(23,20,9);
+@aside:			rgb(158,156,149);
+
+@link:			rgb(255,195,0);
+@gold: 			rgb(255,195,0);
 
 //
 // Important numbers
@@ -15,7 +31,6 @@
 @column: 100% / 18;
 @font-size: 16;
 @em:@font-size*1em;
-
 
 /*
 *
@@ -161,6 +176,7 @@ img {
 *
 */
 
+html,
 body {
 	/* 16px / 24px */
 	font-size: @font-size / 16 * 1em; 
@@ -202,7 +218,6 @@ body {
 	font-size: 110 / @em;
 	line-height: (@line*5) / 110 * 1em;
 }
-
 
 /*
 *
@@ -282,7 +297,7 @@ h3 {
 *  ----------------------------------------------------------------------
 *  Margin   | #  1     2     3     4     5     6     7     8   |   Margin
 *  5.55555% | %  12.5  25.0  37.5  50.0  62.5  75.0  87.5  100 | 5.55555%
-*	
+*
 *
 */
 
@@ -363,17 +378,12 @@ h3 {
 	
 }
 
-
 /*
-*
 *  Sixteen-column grid active
 *  ----------------------------------------------------------------------------------------------------------------------
 *  Margin   | #  1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16  |   Margin
 *  5.55555% | %  6.25  12.5  18.75 25.0  31.25 37.5  43.75 50.0  56.25 62.5  68.75 75.0  81.25 87.5  93.75 100 | 5.55555%
-*	
-*
 */
-
 /* @media screen and (min-width: 1872px) */
 @media screen and (min-width: 117em) {
 	
@@ -405,5 +415,21 @@ h3 {
 		font-size: (@font-size + 2) / @em;
 		max-width: 2560/@em;
 	}
-	
+
 }
+
+.row {
+  margin-left: 5.555555555555555%;
+  margin-right: 5.555555555555555%;
+  clear: both;
+}
+
+.row span {
+  display: block;
+  background-color: @gold;
+  opacity: 0.5;
+}
+
+@import 'grid.less';
+  .make-grid-columns();
+  .make-grid(xs);
