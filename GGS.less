@@ -32,6 +32,24 @@
 @font-size: 16;
 @em:@font-size*1em;
 
+
+
+.row {
+  margin-left: calc(~'100% / 18');
+  margin-right: calc(~'100% / 18');
+  clear: both;
+}
+
+.row span {
+  display: block;
+  background-color: @gold;
+  opacity: 0.5;
+}
+
+@import 'grid.less';
+
+.make-grid-columns(16);
+
 /*
 *
 *  Margin, padding, and border resets
@@ -179,7 +197,7 @@ img {
 html,
 body {
 	/* 16px / 24px */
-	font-size: @font-size / 16 * 1em; 
+	font-size: @font-size / 16 * 1em;
 	line-height: @line / @em;
 }
 
@@ -287,7 +305,8 @@ h3 {
 		.huge();
 		margin: (48/42*1em) 0 (24/42*1em);
 	}
-	
+
+    .make-grid(4,sm);
 }
 
 
@@ -313,7 +332,8 @@ h3 {
 		float: left;
 		width: 50%;
 	}
-	
+
+  .make-grid(8,md);
 }
 
 
@@ -324,6 +344,8 @@ h3 {
 		/* Zoom baseline grid to 17/16 = 1.0625 */
 		font-size: (@font-size + 1) / @em;
 	}
+
+  .make-grid(8,md);
 }
 
 
@@ -339,6 +361,7 @@ h3 {
 		margin: 0 @column*3;
 	}
 
+  .make-grid(8,md);
 }
 
 
@@ -349,7 +372,8 @@ h3 {
 		/* Zoom baseline grid to 17/16 = 1.0625 */
 		font-size: (@font-size + 1) / @em;
 	}
-	
+
+  .make-grid(8,md);
 }
 
 
@@ -364,7 +388,8 @@ h3 {
 	header, #twoway {
 		margin: 0 @column*5;
 	}
-	
+
+  .make-grid(8,md);
 }
 
 
@@ -375,7 +400,8 @@ h3 {
 		/* Zoom baseline grid to 17/16 = 1.0625 */
 		font-size: (@font-size + 1) / @em;
 	}
-	
+
+  .make-grid(8,md);
 }
 
 /*
@@ -403,7 +429,8 @@ h3 {
 	#twoway .wrapper:first-child {
 		margin-left: 25%;
 	}
-	
+
+  .make-grid(16,lg);
 }
 
 
@@ -416,20 +443,5 @@ h3 {
 		max-width: 2560/@em;
 	}
 
+  .make-grid(16,lg);
 }
-
-.row {
-  margin-left: 5.555555555555555%;
-  margin-right: 5.555555555555555%;
-  clear: both;
-}
-
-.row span {
-  display: block;
-  background-color: @gold;
-  opacity: 0.5;
-}
-
-@import 'grid.less';
-  .make-grid-columns();
-  .make-grid(xs);

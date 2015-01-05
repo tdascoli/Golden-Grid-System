@@ -1,0 +1,346 @@
+@line: 24;
+@column: 100% / 18;
+@font-size: 16;
+@em:@font-size*1em;
+
+//@grid-columns: 16;
+@grid-gutter-width: @line/@em;
+
+@background: 	rgb(255,254,250);
+
+@body: 			rgb(61,60,56);
+@emphasis:		rgb(23,20,9);
+@aside:			rgb(158,156,149);
+
+@link:			rgb(255,195,0);
+@gold: 			rgb(255,195,0);
+
+
+@import 'mixins.less';
+
+// Framework grid generation
+//
+// Used only by Bootstrap to generate the correct number of grid classes given
+// any value of `@grid-columns`.
+
+.make-grid-columns(@grid-columns) {
+  // Common styles for all sizes of grid columns, widths 1-12
+  .col(@index) when (@index = 1) { // initial
+    @item: ~".col-xs-@{index}, .col-sm-@{index}, .col-md-@{index}, .col-lg-@{index}";
+    .col((@index + 1), @item);
+  }
+  .col(@index, @list) when (@index =< @grid-columns) { // general; "=<" isn't a typo
+    @item: ~".col-xs-@{index}, .col-sm-@{index}, .col-md-@{index}, .col-lg-@{index}";
+    .col((@index + 1), ~"@{list}, @{item}");
+  }
+  .col(@index, @list) when (@index > @grid-columns) {
+// terminal
+@{list} {
+  position: relative;
+// Prevent columns from collapsing when empty
+  min-height: @grid-gutter-width;
+// Inner gutter via padding
+  padding-left:  (@grid-gutter-width / 2);
+  padding-right: (@grid-gutter-width / 2);
+}
+  }
+  .col(1); // kickstart it
+  }
+
+.float-grid-columns(@class) {
+  .col(@index) when (@index = 1) { // initial
+    @item: ~".col-@{class}-@{index}";
+    .col((@index + 1), @item);
+  }
+  .col(@index, @list) when (@index =< @grid-columns) { // general
+    @item: ~".col-@{class}-@{index}";
+    .col((@index + 1), ~"@{list}, @{item}");
+  }
+  .col(@index, @list) when (@index > @grid-columns) { // terminal
+    @{list} {
+      float: left;
+    }
+  }
+  .col(1); // kickstart it
+  }
+
+.calc-grid-column(@index, @class, @type) when (@type = width) and (@index > 0) {
+  .col-@{class}-@{index} {
+    width: calc(percentage((@index / @grid-columns))~" - @{grid-gutter-width}");
+    min-height:  (@line / @em);
+  }
+}
+.calc-grid-column(@index, @class, @type) when (@type = push) and (@index > 0) {
+  .col-@{class}-push-@{index} {
+    left: percentage((@index / @grid-columns));
+  }
+}
+.calc-grid-column(@index, @class, @type) when (@type = push) and (@index = 0) {
+  .col-@{class}-push-0 {
+    left: auto;
+  }
+}
+.calc-grid-column(@index, @class, @type) when (@type = pull) and (@index > 0) {
+  .col-@{class}-pull-@{index} {
+    right: percentage((@index / @grid-columns));
+  }
+}
+.calc-grid-column(@index, @class, @type) when (@type = pull) and (@index = 0) {
+  .col-@{class}-pull-0 {
+    right: auto;
+  }
+}
+.calc-grid-column(@index, @class, @type) when (@type = offset) {
+  .col-@{class}-offset-@{index} {
+    margin-left: percentage((@index / @grid-columns));
+  }
+}
+
+// Basic looping in LESS
+.loop-grid-columns(@index, @class, @type) when (@index >= 0) {
+  .calc-grid-column(@index, @class, @type);
+  // next iteration
+  .loop-grid-columns((@index - 1), @class, @type);
+}
+
+// Creates a wrapper for a series of columns
+.make-row(@gutter: @grid-gutter-width) {
+  margin-left:  (@gutter / -2);
+  margin-right: (@gutter / -2);
+  &:extend(.clearfix all);
+}
+
+// Create grid for specific class
+.make-grid(@grid-columns, @class) {
+  .float-grid-columns(@class);
+  .loop-grid-columns(@grid-columns, @class, width);
+  .loop-grid-columns(@grid-columns, @class, pull);
+  .loop-grid-columns(@grid-columns, @class, push);
+  .loop-grid-columns(@grid-columns, @class, offset);
+}
+
+//====
+// CSS
+/*
+*
+*  Consistency fixes
+*  adopted from http://necolas.github.com/normalize.css/
+*
+*/
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+body {
+  min-height: 100%;
+  font-size: 100%;
+}
+// css
+html,
+body {
+  /* 16px / 24px */
+  font-size: @font-size / 16 * 1em;
+  line-height: @line / @em;
+}
+
+.small {
+  /* 13px / 18px */
+  font-size: (@font-size*0.8125) / @em;
+  line-height: (@line*0.75) / (@font-size*0.8125) * 1em;
+}
+
+.normal, h3 {
+  /* 16px / 24px */
+  font-size: @font-size / @em;
+  line-height: @line / @em; /* 24 */
+}
+
+.large, h2, h1 {
+  /* 26 / 36px */
+  font-size: 26 / @em;
+  line-height: (@line*1.5) / 26 * 1em;
+}
+
+.huge {
+  /* 42px / 48px */
+  font-size: 42 / @em;
+  line-height: (@line*2) / 42 * 1em;
+}
+
+.massive {
+  /* 68px / 72px */
+  font-size: 68 / @em;
+  line-height: (@line*3) / 68 * 1em;
+}
+
+.gigantic {
+  /* 110px / 120px */
+  font-size: 110 / @em;
+  line-height: (@line*5) / 110 * 1em;
+}
+
+/*
+*
+*  Fixes for IE6-8
+*  http://jonikorpi.com/leaving-old-IE-behind/
+*
+*/
+
+.ie body {
+  width: 640/@em;
+  margin: 0 auto;
+  font-size: (@font-size + 1) / @em;
+}
+
+.ie h1 {
+  .huge();
+  margin: (48/42*1em) 0 (24/42*1em);
+}
+
+.make-grid-columns(16);
+
+/*
+*
+*  Four-column grid active
+*  ----------------------------------------
+*  Margin   | #  1   2   3   4   |   Margin
+*  5.55555% | %  25  50  75  100 | 5.55555%
+*
+*/
+/* @media screen and (min-width: 640px) */
+@media screen and (min-width: 40em) {
+
+  body {
+    /* Zoom baseline grid to 17/16 = 1.0625 */
+    font-size: (@font-size + 1) / @em;
+  }
+
+  h1 {
+    .huge();
+    margin: (48/42*1em) 0 (24/42*1em);
+  }
+}
+
+
+  .make-grid(4,xs);
+
+/*
+*
+*  Eight-column grid active
+*  ----------------------------------------------------------------------
+*  Margin   | #  1     2     3     4     5     6     7     8   |   Margin
+*  5.55555% | %  12.5  25.0  37.5  50.0  62.5  75.0  87.5  100 | 5.55555%
+*
+*
+*/
+/* @media screen and (min-width: 720px) */
+@media screen and (min-width: 45em) {
+
+  body {
+    /* Reset baseline grid to 16/16 = 1 */
+    font-size: (@font-size) / @em;
+  }
+
+  .make-grid(8,md);
+}
+
+
+/* @media screen and (min-width: 888px) */
+@media screen and (min-width: 55.5em) {
+
+  body {
+    /* Zoom baseline grid to 17/16 = 1.0625 */
+    font-size: (@font-size + 1) / @em;
+  }
+
+  .make-grid(8,md);
+}
+
+
+/* @media screen and (min-width: 984px) */
+@media screen and (min-width: 61.5em) {
+
+  body {
+    /* Reset baseline grid to 16/16 = 1.0 */
+    font-size: (@font-size) / @em;
+  }
+
+  .make-grid(8,md);
+}
+
+
+/* @media screen and (min-width: 1200px) */
+@media screen and (min-width: 75em) {
+
+  body {
+    /* Zoom baseline grid to 17/16 = 1.0625 */
+    font-size: (@font-size + 1) / @em;
+  }
+
+  .make-grid(8,md);
+}
+
+
+/* @media screen and (min-width: 1392px) */
+@media screen and (min-width: 87em) {
+
+  body {
+    /* Reset baseline grid to 16/16 = 1.0 */
+    font-size: (@font-size) / @em;
+  }
+
+  .make-grid(8,md);
+}
+
+
+/* @media screen and (min-width: 1680px) */
+@media screen and (min-width: 105em) {
+
+  body {
+    /* Zoom baseline grid to 17/16 = 1.0625 */
+    font-size: (@font-size + 1) / @em;
+  }
+
+}
+
+/*
+*  Sixteen-column grid active
+*  ----------------------------------------------------------------------------------------------------------------------
+*  Margin   | #  1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16  |   Margin
+*  5.55555% | %  6.25  12.5  18.75 25.0  31.25 37.5  43.75 50.0  56.25 62.5  68.75 75.0  81.25 87.5  93.75 100 | 5.55555%
+*/
+/* @media screen and (min-width: 1872px) */
+@media screen and (min-width: 117em) {
+
+  .make-grid(16,lg);
+}
+
+
+/* @media screen and (min-width: 2080px) */
+@media screen and (min-width: 130em) {
+
+  body {
+    /* Zoom baseline grid to 18/16 = 1.125 */
+    font-size: (@font-size + 2) / @em;
+    max-width: 2560/@em;
+  }
+
+  .make-grid(16,lg);
+}
+
+
+
+//====
+.row {
+  margin-left: calc(~'100% / 18');
+  margin-right: calc(~'100% / 18');
+  clear: both;
+}
+
+.row span {
+  display: block;
+  background-color: @gold;
+  opacity: 0.5;
+}

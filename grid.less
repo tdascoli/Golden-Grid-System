@@ -3,16 +3,15 @@
 @font-size: 16;
 @em:@font-size*1em;
 
-@grid-columns: 16;
+//@grid-columns: 16;
 @grid-gutter-width: @line/@em;
-
 
 // Framework grid generation
 //
 // Used only by Bootstrap to generate the correct number of grid classes given
 // any value of `@grid-columns`.
 
-.make-grid-columns() {
+.make-grid-columns(@grid-columns) {
   // Common styles for all sizes of grid columns, widths 1-12
   .col(@index) when (@index = 1) { // initial
     @item: ~".col-xs-@{index}, .col-sm-@{index}, .col-md-@{index}, .col-lg-@{index}";
@@ -22,15 +21,16 @@
     @item: ~".col-xs-@{index}, .col-sm-@{index}, .col-md-@{index}, .col-lg-@{index}";
     .col((@index + 1), ~"@{list}, @{item}");
   }
-  .col(@index, @list) when (@index > @grid-columns) { // terminal
-@{list} {
-  position: relative;
-// Prevent columns from collapsing when empty
-  min-height: @grid-gutter-width;
-// Inner gutter via padding
-  padding-left:  (@grid-gutter-width / 2);
-  padding-right: (@grid-gutter-width / 2);
-}
+  .col(@index, @list) when (@index > @grid-columns) {
+    // terminal
+    @{list} {
+      position: relative;
+    // Prevent columns from collapsing when empty
+      min-height: @grid-gutter-width;
+    // Inner gutter via padding
+      padding-left:  (@grid-gutter-width / 2);
+      padding-right: (@grid-gutter-width / 2);
+    }
   }
   .col(1); // kickstart it
 }
@@ -98,7 +98,7 @@
 }
 
 // Create grid for specific class
-.make-grid(@class) {
+.make-grid(@grid-columns, @class) {
   .float-grid-columns(@class);
   .loop-grid-columns(@grid-columns, @class, width);
   .loop-grid-columns(@grid-columns, @class, pull);
